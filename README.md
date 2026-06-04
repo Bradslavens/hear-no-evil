@@ -39,6 +39,19 @@ npm run test:watch
 npm start         # start the server
 ```
 
+## Puzzles
+
+A random puzzle is chosen each round. Current set:
+
+- 🔐 **Vault Code** — colour, digit, shape
+- 🚀 **Launch Sequence** — light colour, fuel cells, heading
+- 🧙 **Wizard's Spell** — element, power, rune
+- 🗺️ **Treasure Map** — landmark, paces, direction
+
+Each splits clues across the senses so the 🙈 blind and 🙉 deaf players can never
+solve alone. (Today the 🙊 mute, who sees and hears everything, technically can —
+a future "private clues" mode will close that gap.)
+
 ## Status
 
-Early MVP — single puzzle ("Vault Code"), three roles, shared canvas, win/lose.
+Early MVP — four puzzles, three roles, shared canvas, timer, win/lose, replay.

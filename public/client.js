@@ -37,6 +37,7 @@ const els = {
   clearBtn: document.getElementById('clear-btn'),
   answerForm: document.getElementById('answer-form'),
   answerInput: document.getElementById('answer-input'),
+  answerHeading: document.querySelector('#answer-panel h2'),
   banner: document.getElementById('result-banner'),
 };
 
@@ -215,9 +216,11 @@ els.clearBtn.addEventListener('click', () => {
 socket.on('clear', clearBoard);
 
 /* ---------- Timer ---------- */
-socket.on('game:started', ({ durationMs }) => {
+socket.on('game:started', ({ durationMs, title, prompt }) => {
   gameActive = true;
   els.startBtn.classList.add('hidden');
+  if (title) els.answerHeading.textContent = title;
+  if (prompt) els.answerInput.placeholder = prompt;
   const startedAt = Date.now();
   clearInterval(timerHandle);
   const tick = () => {

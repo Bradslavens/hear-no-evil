@@ -6,7 +6,7 @@ import { Server } from 'socket.io';
 
 import { CAPABILITIES } from '../src/roles.js';
 import { createLobby, joinLobby, leaveLobby, getRoom } from '../src/lobby.js';
-import { createVaultPuzzle, cluesForRole } from '../src/puzzle.js';
+import { randomPuzzle, cluesForRole } from '../src/puzzle.js';
 import { createGame, submitAnswer } from '../src/game.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -23,7 +23,7 @@ function publicRoom(room) {
 
 // Build the HTTP + Socket.IO server without starting to listen, so tests can
 // drive it on an ephemeral port. The pure game logic lives in src/.
-export function createServer() {
+export function createServer({ makePuzzle = randomPuzzle } = {}) {
   const app = express();
   app.use(express.static(PUBLIC_DIR));
 
@@ -52,7 +52,7 @@ export function createServer() {
       const room = getRoom(lobby, roomId);
       if (!room || room.status !== 'ready') return;
 
-      const puzzle = createVaultPuzzle();
+      const puzzle = makePuzzle();
       const game = createGame(puzzle);
       games.set(roomId, game);
 
@@ -63,6 +63,8 @@ export function createServer() {
       io.to(roomId).emit('game:started', {
         durationMs: game.durationMs,
         startedAt: game.startedAt,
+        title: puzzle.title,
+        prompt: puzzle.prompt,
       });
     });
 

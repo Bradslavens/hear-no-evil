@@ -1,12 +1,14 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
 import { io as ioClient } from 'socket.io-client';
 import { createServer } from '../server/index.js';
+import { getPuzzle } from '../src/puzzle.js';
 
 let httpServer;
 let port;
 
 beforeAll(async () => {
-  ({ httpServer } = createServer());
+  // Pin the puzzle so clue-id assertions are deterministic.
+  ({ httpServer } = createServer({ makePuzzle: () => getPuzzle('vault-code') }));
   await new Promise((resolve) => httpServer.listen(0, resolve));
   port = httpServer.address().port;
 });

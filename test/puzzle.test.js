@@ -1,10 +1,21 @@
 import { describe, it, expect } from 'vitest';
-import { createVaultPuzzle, cluesForRole, checkAnswer } from '../src/puzzle.js';
+import {
+  createVaultPuzzle,
+  cluesForRole,
+  checkAnswer,
+  answerOf,
+  rolesSolvingAlone,
+} from '../src/puzzle.js';
 
 describe('vault puzzle', () => {
-  it('has an answer with a color, digit, and shape', () => {
+  it('has an ordered three-part answer (colour, digit, shape)', () => {
     const puzzle = createVaultPuzzle();
-    expect(puzzle.answer).toEqual({ color: 'red', digit: '7', shape: 'triangle' });
+    expect(answerOf(puzzle)).toEqual(['red', '7', 'triangle']);
+  });
+
+  it('lets only the mute solve it alone; blind and deaf cannot', () => {
+    const puzzle = createVaultPuzzle();
+    expect(rolesSolvingAlone(puzzle)).toEqual(['mute']);
   });
 
   describe('clue routing', () => {
