@@ -1,0 +1,248 @@
+:root {
+  --bg: #1b1d23;
+  --panel: #262932;
+  --panel-2: #2f333f;
+  --text: #e8eaed;
+  --muted: #9aa0ac;
+  --accent: #ffb454;
+  --good: #3ecf8e;
+  --bad: #ff6b6b;
+  --border: #3a3f4b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.screen {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 4px;
+}
+
+.tagline {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Join form */
+#join-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 320px;
+  margin: 24px auto;
+}
+
+label {
+  font-weight: 600;
+}
+
+input[type='text'] {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #1b1d23;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.07);
+}
+
+button.hidden {
+  display: none;
+}
+
+.error {
+  color: var(--bad);
+  text-align: center;
+  min-height: 1.2em;
+}
+
+.hint {
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Game header */
+#game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.badge {
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--panel-2);
+}
+
+.timer {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.timer.low {
+  color: var(--bad);
+}
+
+.voice {
+  background: var(--panel-2);
+  border-left: 3px solid var(--accent);
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 16px;
+}
+
+.panel h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+#clue-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+#clue-list li {
+  margin-bottom: 6px;
+}
+
+/* Canvas */
+#board {
+  width: 100%;
+  height: auto;
+  background: #fbfbf7;
+  border-radius: 8px;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.canvas-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+
+.canvas-tools button {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+/* Answer */
+#answer-form {
+  display: flex;
+  gap: 8px;
+}
+
+#answer-form input {
+  flex: 1;
+}
+
+/* Result banner */
+.banner {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.banner.won {
+  background: rgba(62, 207, 142, 0.15);
+  color: var(--good);
+  border: 1px solid var(--good);
+}
+
+.banner.lost {
+  background: rgba(255, 107, 107, 0.15);
+  color: var(--bad);
+  border: 1px solid var(--bad);
+}
+
+/*
+  Role-based visibility. The <body> gets a role-blind / role-deaf / role-mute
+  class once a role is assigned, which decides what each player can perceive.
+*/
+.sighted-only,
+.hearing-only,
+.blind-only {
+  display: none;
+}
+
+body.role-deaf .sighted-only {
+  display: block;
+}
+body.role-mute .sighted-only,
+body.role-mute .hearing-only {
+  display: block;
+}
+body.role-blind .hearing-only {
+  display: block;
+}
+body.role-blind .blind-only {
+  display: block;
+}
+
+/* The blind player's screen is intentionally dark and bare. */
+body.role-blind {
+  background: #000;
+}
+body.role-blind .panel {
+  background: #0a0a0a;
+  border-color: #222;
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HearNoEvil</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- JOIN SCREEN -->
+    <section id="join-screen" class="screen">
+      <h1>🙈🙉🙊 HearNoEvil</h1>
+      <p class="tagline">A three-player co-op puzzle. You each lose one sense.</p>
+      <form id="join-form">
+        <label for="room-code">Room code</label>
+        <input
+          id="room-code"
+          name="room-code"
+          type="text"
+          autocomplete="off"
+          placeholder="e.g. VAULT"
+          required
+        />
+        <button type="submit">Join room</button>
+      </form>
+      <p id="join-error" class="error" role="alert"></p>
+      <p class="hint">
+        Share the same room code with two friends. The first three to join become
+        🙈 See&nbsp;No&nbsp;Evil, 🙉 Hear&nbsp;No&nbsp;Evil, and 🙊 Speak&nbsp;No&nbsp;Evil.
+      </p>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <section id="game-screen" class="screen hidden">
+      <header id="game-header">
+        <span id="role-badge" class="badge"></span>
+        <span id="room-label" class="muted"></span>
+        <span id="timer" class="timer">--:--</span>
+      </header>
+
+      <p id="voice-instructions" class="voice"></p>
+
+      <div id="lobby-status" class="panel">
+        <p id="player-count">Waiting for players…</p>
+        <button id="start-btn" class="hidden">Start puzzle</button>
+      </div>
+
+      <!-- Visual clues: sighted roles only -->
+      <div id="clues-panel" class="panel sighted-only">
+        <h2>What you can see</h2>
+        <ul id="clue-list"></ul>
+      </div>
+
+      <!-- Audio controls: hearing roles only -->
+      <div id="audio-panel" class="panel hearing-only">
+        <h2>What you can hear</h2>
+        <button id="replay-audio">🔊 Replay sounds</button>
+      </div>
+
+      <!-- Blind notice -->
+      <div id="blind-panel" class="panel blind-only">
+        <p>Your screen stays dark. Listen for the sounds and talk with your team.</p>
+      </div>
+
+      <!-- Shared canvas: sighted roles only -->
+      <div id="canvas-panel" class="panel sighted-only">
+        <h2>Shared whiteboard</h2>
+        <canvas id="board" width="480" height="320"></canvas>
+        <div class="canvas-tools">
+          <button id="clear-btn">Clear</button>
+          <span class="muted">Draw to communicate — the blind player can't see this.</span>
+        </div>
+      </div>
+
+      <!-- Answer -->
+      <div id="answer-panel" class="panel">
+        <h2>Crack the code</h2>
+        <form id="answer-form">
+          <input
+            id="answer-input"
+            type="text"
+            autocomplete="off"
+            placeholder="colour digit shape — e.g. red 7 triangle"
+          />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      <div id="result-banner" class="banner hidden"></div>
+    </section>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+  </body>
+</html>
