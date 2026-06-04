@@ -43,6 +43,7 @@ const els = {
 let myRole = null;
 let lastClues = [];
 let timerHandle = null;
+let gameActive = false;
 
 /* ---------- Join ---------- */
 els.joinForm.addEventListener('submit', async (e) => {
@@ -74,10 +75,14 @@ socket.on('room:update', (room) => {
     room.status === 'ready'
       ? 'All three players are here!'
       : `Waiting for players… (${filled}/3)`;
-  els.startBtn.classList.toggle('hidden', room.status !== 'ready');
+  // Only offer Start before a game is running.
+  els.startBtn.classList.toggle('hidden', gameActive || room.status !== 'ready');
 });
 
-els.startBtn.addEventListener('click', () => socket.emit('start'));
+els.startBtn.addEventListener('click', () => {
+  els.startBtn.disabled = true; // guard against a double-tap before the server responds
+  socket.emit('start');
+});
 
 /* ---------- Clues ---------- */
 socket.on('clues', (clues) => {
@@ -211,6 +216,8 @@ socket.on('clear', clearBoard);
 
 /* ---------- Timer ---------- */
 socket.on('game:started', ({ durationMs }) => {
+  gameActive = true;
+  els.startBtn.classList.add('hidden');
   const startedAt = Date.now();
   clearInterval(timerHandle);
   const tick = () => {
@@ -240,12 +247,16 @@ els.answerForm.addEventListener('submit', async (e) => {
 });
 
 socket.on('game:result', ({ status }) => {
-  if (status === 'won') {
-    showBanner('won', '🎉 Vault cracked! You win!');
+  if (status === 'won' || status === 'lost') {
+    showBanner(status, status === 'won'
+      ? '🎉 Vault cracked! You win!'
+      : '⏱️ Out of time. The vault stays shut.');
     clearInterval(timerHandle);
-  } else if (status === 'lost') {
-    showBanner('lost', '⏱️ Out of time. The vault stays shut.');
-    clearInterval(timerHandle);
+    // Game over — let the team start a fresh round.
+    gameActive = false;
+    els.startBtn.disabled = false;
+    els.startBtn.textContent = 'Play again';
+    els.startBtn.classList.remove('hidden');
   }
   // status 'playing' (wrong answer) shows nothing — keep going.
 });
