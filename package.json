@@ -1,0 +1,24 @@
+{
+  "name": "hear-no-evil",
+  "version": "0.1.0",
+  "description": "A 3-player cooperative sensory-constraint puzzle game (See No Evil / Hear No Evil / Speak No Evil).",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "game",
+    "puzzle",
+    "cooperative",
+    "multiplayer",
+    "websockets"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "vitest": "^4.1.8"
+  }
+}
